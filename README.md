@@ -29,9 +29,11 @@ and you'll get a list of the available devices.
 
 If you then do the commnand:
 
-evtest /dev/input/event19
+evtest /dev/input/event19 (where in this case '19' is the event that we're monitoring)
 
-for each input, you can then see each input.
+for each input, you can then see each input and find out which one the ShuttleXpress is.
+
+That might help you if you needed to make the code work with a different device.
 
 
 I hope all this helps.  Regards, Dave.
