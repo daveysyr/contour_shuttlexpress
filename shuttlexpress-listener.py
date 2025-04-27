@@ -34,27 +34,26 @@ print(f"Listening on {device}...\n")
 #device = InputDevice('/dev/input/event22')
 #print(f"Listening on {device.name}...\n")
 
-
+# This maps the buttons
 BTN_MAP = {
-    260: "Button 1",
-    261: "Button 2",
-    262: "Button 3",
-    263: "Button 4",
+    260: "Button 1",  # Button 'space'
+    261: "Button 2",  # Button 'enter'
+    262: "Button 3",  # Button 'esc'
+    263: "Button 4",  # Button 'z'
     264: "Button 5",  # Button 's'
 }
 
-
+# This maps the keys
 KEY_MAP = {
-    260: ecodes.KEY_SPACE,    # Button 1
-    261: ecodes.KEY_ENTER,    # Button 2
-    262: ecodes.KEY_ESC,      # Button 3
-    263: ecodes.KEY_Z,        # Button 4
+    260: ecodes.KEY_SPACE,    # Button 1 → 'space'
+    261: ecodes.KEY_ENTER,    # Button 2 → 'enter'
+    262: ecodes.KEY_ESC,      # Button 3 → 'esc'
+    263: ecodes.KEY_Z,        # Button 4 → 'z'
     264: ecodes.KEY_S,        # Button 5 → 's'
 }
 
 
-# This section creates the virtual keyboard
-
+# This section creates the virtual keyboard buttons
 uinput = UInput({
     ecodes.EV_KEY: [
         ecodes.KEY_LEFTCTRL,
@@ -94,8 +93,7 @@ for event in device.read_loop():
                 else:
                     delta = event.value - last_dial_value
 
-
-
+                # This outputs the left and right keys
                 if delta > 0:
                     print("Jog Right → KEY_RIGHT")
                     uinput.write(ecodes.EV_KEY, ecodes.KEY_RIGHT, 1)
@@ -148,13 +146,8 @@ for event in device.read_loop():
                     print ('shuttle_old', shuttle_old)
                     shuttle_old = shuttle_new
                     print ('shuttle_new', shuttle_old)
-            
-            #Store the latest shuttle value
-            #print ('shuttle_old', shuttle_old)
-            #shuttle_old=shuttle_new
-            #print ('shuttle_new', shuttle_old)
-            
 
+    # This deals with multiple keystrokes, e.g. CTRL+x, or just outputs the standard key
     elif event.type == ecodes.EV_KEY:
         keycode = KEY_MAP.get(event.code)
         if keycode and event.value == 1:  # Only handle "Pressed"
